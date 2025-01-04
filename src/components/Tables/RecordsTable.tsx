@@ -1,5 +1,8 @@
 import axios from "axios"
 import React, { useEffect, useState } from "react"
+import ButtonChange from "./ButtonChange"
+import RecordsTableHead from "./RecordsTableHead"
+import RecordsTableBody from "./RecordsTableBody"
 
 export default function RecordsTable(): React.ReactNode {
     interface PostShablonInterface {
@@ -16,19 +19,8 @@ export default function RecordsTable(): React.ReactNode {
 
     const [data, setData] = useState([])
     const [load, setLoad] = useState(false)
-
-    function HanglerPost(name: keyof PostShablonInterface, event:string): void {
-        postShablon[name] = event
-        console.log(name, event, postShablon)
-    }
-
-    function HanglerResponse(data: Object) {
-        axios.post('/api/records', JSON.stringify(data), {
-            headers: {'Content-Type': 'application/json'}
-        })
-        .then(response => console.log(response))
-        .catch(err => console.log(err))
-    }
+    const [changeMod, setChangeMod] = useState(false)
+    const [UpdateEl, setUpdateEl] = useState(0)
 
     useEffect(() => {
         axios.get('/api/records')
@@ -41,14 +33,28 @@ export default function RecordsTable(): React.ReactNode {
     function RecordList(arr: any[]) {
         return arr.map((element, index) => {
             const date = new Date(element.date).toLocaleDateString("ru-RU")
-            return (
-                <tr key={index}>
-                    <td>{element.exercise}</td>
-                    <td>{element.record}</td>
-                    <td>{date}</td>
-                </tr>
-            )
-        });
+                return (
+                    <tr key={index}>
+                        {UpdateEl == element.id && changeMod && (
+                            <RecordsTableBody arr={postShablon} exercise={element.exercise} record={element.record} elid={element.id} type="put"/>
+                        )}
+                        {UpdateEl != element.id && (
+                            <>
+                                <td>{element.exercise}</td>
+                                <td>{element.record}</td>
+                                <td>
+                                    {date}
+                                    {changeMod && (
+                                        <><ButtonChange elid={element.id} func={setUpdateEl}/>
+                                        <button>Delete</button></>
+                                    )}
+                                </td>
+                            </>
+                        )}
+
+                    </tr> 
+                )
+            });
     }
     
     if (!load) {
@@ -59,30 +65,18 @@ export default function RecordsTable(): React.ReactNode {
 
     return (
             <>
-            <div>
-                <a href="#" className="btn btn-primary tree-button">ДОБАВИТЬ/ИЗМЕНИТЬ/УДАЛИТЬ</a>
-            </div>
+            <div id="TableWrapper">
+            <button className={!changeMod ? 'btn btn-primary tree-button' : 'btn btn-warning tree-button'} onClick={() => setChangeMod((prevState) => !prevState)}>ИЗМЕНИТЬ/УДАЛИТЬ</button>
             <table className="table text-center">
-                <thead>
-                    <tr>
-                        <th colSpan={1} scope="col">Упражнение</th>
-                        <th colSpan={1} scope="col">Рекорд</th>
-                        <th colSpan={1} scope="col">Дней с последнего рекорда</th>
-                    </tr>
-                </thead>
+            <RecordsTableHead />
                 <tbody>
                     <tr>
-                        <td colSpan={1}><input type="text" className="form-control" onChange={event => HanglerPost('exercise', event.target.value)} /></td>
-                        <td colSpan={1}><input type="number" className="form-control" onChange={event => HanglerPost('record', event.target.value)} /></td>
-                        <td colSpan={2}>
-                            <div className="d-flex align-items-center">
-                                <input type="date" className="form-control" onChange={event => HanglerPost('date', event.target.value)} /><button onClick={() => HanglerResponse(postShablon)} type="submit" className="btn btn-primary">Готово</button>
-                            </div>
-                        </td>
+                    {UpdateEl == 0 && !changeMod && <RecordsTableBody arr={postShablon} type="post"/>}
                     </tr>
                     {RecordList(data)}
                 </tbody>
             </table>
+            </div>
             </>
         )
     }

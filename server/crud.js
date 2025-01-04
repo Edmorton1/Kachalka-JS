@@ -30,10 +30,14 @@ function crud(path, app, db) {
   
       // Обновление записи
       app.put(`/api/${path}/:id`, async (req, res) => {
-        const id = req.params.id;
-        const info = req.body;
-        await db(path).select("*").where({ id: id }).update(info);
-        res.json(info);
+        try {
+          const id = req.params.id;
+          const info = req.body;
+          await db(path).select("*").where({ id: id }).update(info);
+          res.json(info);
+        } catch (err) {
+          console.log(err)
+        }
       });
   
       // Удаление записи
