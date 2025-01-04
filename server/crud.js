@@ -6,7 +6,7 @@ function crud(path, app, db) {
     try {
       // Получение всех записей
       app.get(`/api/${path}`, async (req, res) => {
-        const obj = await db(path);
+        const obj = await db(path).orderBy('id','desc');
         res.json(obj);
       });
   

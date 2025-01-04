@@ -1,21 +1,12 @@
 import axios from "axios"
 import React, { useEffect, useState } from "react"
-import ButtonChange from "./ButtonChange"
 import RecordsTableHead from "./RecordsTableHead"
 import RecordsTableBody from "./RecordsTableBody"
+import ButtonChange from "./ButtonChange"
+import "./Table.scss"
 
 export default function RecordsTable(): React.ReactNode {
-    interface PostShablonInterface {
-        exercise: string | null,
-        record: string | null,
-        date: string | null
-    }
 
-    const postShablon: PostShablonInterface = {
-        "exercise": null,
-        "record": null,
-        "date": null
-    }
 
     const [data, setData] = useState([])
     const [load, setLoad] = useState(false)
@@ -33,27 +24,16 @@ export default function RecordsTable(): React.ReactNode {
     function RecordList(arr: any[]) {
         return arr.map((element, index) => {
             const date = new Date(element.date).toLocaleDateString("ru-RU")
-                return (
-                    <tr key={index}>
-                        {UpdateEl == element.id && changeMod && (
-                            <RecordsTableBody arr={postShablon} exercise={element.exercise} record={element.record} elid={element.id} type="put"/>
-                        )}
-                        {UpdateEl != element.id && (
-                            <>
-                                <td>{element.exercise}</td>
-                                <td>{element.record}</td>
-                                <td>
-                                    {date}
-                                    {changeMod && (
-                                        <><ButtonChange elid={element.id} func={setUpdateEl}/>
-                                        <button>Delete</button></>
-                                    )}
-                                </td>
-                            </>
-                        )}
-
-                    </tr> 
-                )
+                if (changeMod && UpdateEl == element.id) {
+                    return (<RecordsTableBody exercise={element.exercise} record={element.record} date={element.date} elid={element.id} type="put" />)
+                } else {
+                    return (
+                        <tr key={index} style={{height: "45px"}}>
+                            <td>{element.exercise}</td>
+                            <td>{element.record}</td>
+                            <td>{date} {changeMod && <ButtonChange elid={element.id} func={setUpdateEl}/>}</td>
+                        </tr>)
+                }
             });
     }
     
@@ -70,9 +50,7 @@ export default function RecordsTable(): React.ReactNode {
             <table className="table text-center">
             <RecordsTableHead />
                 <tbody>
-                    <tr>
-                    {UpdateEl == 0 && !changeMod && <RecordsTableBody arr={postShablon} type="post"/>}
-                    </tr>
+                    {!changeMod && <RecordsTableBody/>}
                     {RecordList(data)}
                 </tbody>
             </table>
