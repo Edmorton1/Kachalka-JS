@@ -23,7 +23,6 @@ export default function Button({arr, type, elid=null}: ButtonInterface):React.Re
         .catch(err => console.log(err))
     }
     function Handler(arr, type) {
-        console.log(`Handler Wirjd, ${arr, type}`)
         {type == 'post' && HandlerPost(arr)}
         {type == 'put' && HandlerPut(arr)}
     }

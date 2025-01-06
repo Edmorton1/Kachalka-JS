@@ -42,9 +42,13 @@ function crud(path, app, db) {
   
       // Удаление записи
       app.delete(`/api/${path}/:id`, async (req, res) => {
-        const id = req.params.id;
-        await db(path).select("*").where({ id: id }).delete();
-        res.json("Deleted");
+        try {
+          const id = req.params.id;
+          await db(path).select("*").where({ id: id }).delete();
+          res.json("Deleted");
+        } catch (err) {
+          console.log(err)
+        } 
       });
     } catch (err) {
       console.log(err);
