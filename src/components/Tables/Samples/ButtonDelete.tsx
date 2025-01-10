@@ -11,7 +11,7 @@ export default function ButtonDelete({elid, reloadData, path, reloadDataHead}:Bu
     function submitDELETE(elid: number) {
         axios.delete(`/api/${path}/${elid}`)
             .then(() => reloadData())
-            .then(() => reloadDataHead())
+            .then(() => {reloadDataHead && reloadDataHead()})
             .catch((err) => console.log(err))
     }
 

@@ -1,11 +1,6 @@
 import Header from "./Header/Header"
-import React from "react"
 
-interface LayoutInterface {
-    children: React.ReactNode
-}
-
-export default function Layout({ children }: LayoutInterface) {
+export default function Layout({ children }: any) {
     return (
         <>
           <Header />

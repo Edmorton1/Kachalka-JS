@@ -9,4 +9,5 @@ export default defineConfig({
     }
   },
   plugins: [react()],
+  base: "/Kachalka-JS.github.io/"
 })
