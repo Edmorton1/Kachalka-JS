@@ -1,7 +1,7 @@
 header {
     nav {
-        background: rgb(0, 0, 0); // Это свойство можно оставить
-        background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(13, 110, 253, 1) 30%);
+        background: rgb(0,0,0);
+        background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(123,13,253,1) 40%, rgba(253,13,244,1) 80%);
         color: white;
         font-size: 35px;
         font-family: Tahoma;
@@ -9,5 +9,5 @@ header {
 }
 
 img {
-    height: 5rem;
+    height: 4rem;
 }

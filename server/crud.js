@@ -16,6 +16,10 @@ function crud(path, app, db) {
         const obj = await db(path).select("*").where({ id: id });
         res.json(obj);
       });
+      app.get(`/api/statistic_params`, async (req, res) => {
+        const obj = await db('statistic').count("calories").avg('calories as avg_calories').max('calories').avg('time');
+        res.json(obj);
+      });
   
       // Создание записи
       app.post(`/api/${path}`, async (req, res) => {

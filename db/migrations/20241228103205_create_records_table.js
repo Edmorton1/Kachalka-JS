@@ -6,7 +6,7 @@ exports.up = function (knex) {
   return knex.schema.createTable("records", function (table) {
     table.increments('id')
     table.string("exercise", 255).notNullable();
-    table.integer('record').notNullable().checkBetween([0, 1000])
+    table.integer('record').notNullable()
     table.date('date').defaultTo(knex.raw("CURRENT_DATE")).notNullable()
   });
 };
@@ -15,4 +15,6 @@ exports.up = function (knex) {
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.down = function (knex) {};
+exports.down = function (knex) {
+  return knex.schema.dropTableIfExists('records');
+};

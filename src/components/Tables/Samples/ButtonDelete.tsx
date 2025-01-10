@@ -3,13 +3,15 @@ import axios from "axios"
 interface ButtonDeleteInterface {
     elid: number,
     reloadData: Function,
-    path: string
+    path: string,
+    reloadDataHead?: Function
 }
 
-export default function ButtonDelete({elid, reloadData, path}:ButtonDeleteInterface) {
+export default function ButtonDelete({elid, reloadData, path, reloadDataHead}:ButtonDeleteInterface) {
     function submitDELETE(elid: number) {
         axios.delete(`/api/${path}/${elid}`)
             .then(() => reloadData())
+            .then(() => reloadDataHead())
             .catch((err) => console.log(err))
     }
 

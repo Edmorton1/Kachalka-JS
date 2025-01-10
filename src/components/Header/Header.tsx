@@ -9,7 +9,6 @@ export default function Header(): React.ReactNode {
         <nav className="navbar navbar-expand-lg user-color_bug">
             <div className="container-fluid">
                 <Link className="navbar-brand" to="/"><img src={logo} /></Link>
-                <Link className="nav-link active" aria-current="page" to="/about">ЧТО ЭТО ЗА САЙТ?</Link>
             </div>
         </nav>
     </header>
